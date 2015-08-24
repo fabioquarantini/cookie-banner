@@ -164,7 +164,7 @@ Original
 
 ```html
 <script type="text/javascript">
-	alert("Mesage");
+	// Your scripts
 </script>
 ```
 
@@ -172,7 +172,7 @@ Modified
 
 ```html
 <script type="text/plain" class="block-cookie">
-	alert("Mesage");
+	// Your scripts ( Run only if consent is true)
 </script>
 ```
 
