@@ -39,94 +39,76 @@ $(document).ready(function() {
 
 *Default*: `cookie-banner__button`
 
-
 #### consentOnNavigation:
 *boolean*: Implicit consent on site navigation
 
 *Default*: `true`
-
 
 #### consentOnScroll:
 *boolean*: Implicit consent on page scroll
 
 *Default*: `true`
 
-
 #### bannerClass:
 *String*: Banner class
 
 *Default*: `cookie-banner`
-
 
 #### bannerContent:
 *String*: Banner message ( Mandatory variables: {{bannerClass}}, {{cookiePageUrl}}, {{consentClass}} )
 
 *Default*: `<div class="{{bannerClass}}">Questo sito utilizza cookie, anche di terze parti, per migliorare la tua esperienza di navigazione. Per saperne di più o modificare le tue preferenze <a class="cookie-banner__link" href="{{cookiePageUrl}}">clicca qui</a>.<br />Chiudendo questo banner, scorrendo questa pagina o cliccando qualunque suo elemento acconsenti all\'uso dei cookie. <a href="#" class="{{consentClass}} cookie-banner__button--consent">Acconsento</a></div>`
 
-
-#### blockCookie:olean*: Block elements execution (iframe, js, img ... with "blockCookieC" )
+#### blockCookie:
+*Bolean*: Block elements execution (iframe, js, img ... )
 
 *Default*: `true`
 
-
-#### blockCookieAbute:
+#### blockCookieAttribute:
 *String*: Attribute name for insert src when is blocked (iframe, img ...)
 
 *Default*: `cookie-banner`
 
-
-#### blockCookieC:
+#### blockCookieClass:
 *String*: Class name for blocking external cookie (iframe, js, img ...)
 
 *Default*: `block-cookie`
-
 
 #### cookieExpiry:
 *integer*: Cookie Expiry
 
 *Default*: `365`
 
-
 #### cookieName:
 *String*: Cookie name
 
 *Default*: `consentCookie`
-
 
 #### cookiePageUrl:
 *String*: Privacy url
 
 *Default*: `/privacy.html`
 
-
 #### hideBannerOnScroll:
 *boolean*: Hide banner on page scroll. ( consentOnScroll option must be true )
 
 *Default*: `true`
-
-
-#### noCookieSupportMessage:
-*String*: No cookie support banner message
-
-*Default*: `<div class="{{bannerClass}} cookie-banner--warning">I cookie su questo browser sono disabilitati. Il sito potrebbe non funzionare correttamente.</div>`
-
 
 #### onConsent:
 *Function*: Callback function when cookie are accepted
 
 *Default*: `function() {}`
 
-
 #### prependBannerTo:
 *String*:  Selettore dove inserire il banner
 
 *Default*: `body`
 
-
 #### reloadPage:
 *Boolean*:  Reload page when button ("consentClass") is accepted
 
 *Default*: `false`
+
 
 ## Event Hooks
 
