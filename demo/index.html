@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Demo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="../cookie-banner.css">
+
+		<!-- Plugin scripts -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="../jquery.cookie-banner.js"></script>
+		<script src="js/scripts.js"></script>
+
+		<!-- Block external scripts example -->
+		<script class="block-cookie" type="text/plain" src="js/external-scripts.js"></script>
+
+		<!-- Block inline scripts example -->
+		<script type="text/plain" class="block-cookie">
+			alert("Inline Javascript loaded");
+		</script>
+
+	</head>
+	<body>
+
+		<h1>Demo</h1>
+
+		<!-- Block image -->
+		<img class="block-cookie" data-block-cookie="https://www.google.it/images/srpr/logo11w.png" alt="">
+
+		<!-- Block iframe -->
+		<iframe class="block-cookie" width="560" height="315" data-block-cookie="https://www.youtube.com/embed/kxopViU98Xo" frameborder="0" allowfullscreen></iframe>
+
+		<div style="height:900px">
+
+			<!-- Set consent true when view another page ("consentOnNavigation" is true) -->
+			<a href="index.html">Continue navigation link</a>
+
+			<!-- Consent false when view the privacy page ("cookiePageUrl") if consentOnNavigation" is true -->
+			<a href="privacy.html">Privacy link</a>
+		</div>
+
+	</body>
+</html>

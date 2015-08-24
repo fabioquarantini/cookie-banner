@@ -1,0 +1,12 @@
+{
+	"name": "cookie-banner",
+	"author": {
+		"name": "Fabio Quarantini",
+		"url": "http://www.fabioquarantini.com"
+	},
+	"devDependencies": {
+		"gulp": "^3.8.11",
+		"gulp-uglify": "^1.2.0",
+		"gulp-rename": "^1.2.2"
+	}
+}
