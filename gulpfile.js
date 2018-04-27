@@ -1,19 +1,18 @@
 var gulp = require('gulp'),
 	rename = require('gulp-rename'),
+	pump = require('pump'),
 	uglify = require('gulp-uglify');
-
 
 gulp.task('scripts', function() {
 
-	return gulp.src('jquery.cookie-banner.js')
-		.pipe(uglify({
-			preserveComments: 'some',
-		}))
-		.pipe(rename("jquery.cookie-banner.min.js"))
-		.pipe(gulp.dest('.'));
+	pump([
+		gulp.src('jquery.cookie-banner.js'),
+		uglify(),
+		rename('jquery.cookie-banner.min.js'),
+		gulp.dest('.')
+	]);
 
 });
-
 
 gulp.task('default', function() {
 
