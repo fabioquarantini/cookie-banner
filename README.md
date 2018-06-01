@@ -1,6 +1,5 @@
 # Cookie Banner
-
-A jQuery plugin for adding cookie law banner and cookie blocking.
+A customizable jQuery plugin to add a banner and block scripts, compliant with EU Cookie law.
 
 ## Including files
 
@@ -24,7 +23,12 @@ A jQuery plugin for adding cookie law banner and cookie blocking.
 
 $(document).ready(function() {
 	$.cookieBanner({
-		cookiePageUrl: 'your-privacy-url.html'
+		culture: 'it',
+		cookiePageUrl: {
+			it: '/privacy/',
+			en: '/en/privacy/',
+			...
+		}
 	});
 });
 
@@ -33,49 +37,81 @@ $(document).ready(function() {
 
 ## Properties
 
-
-#### consentClass:
-*String*: Class for explicit consent
-
-*Default*: `cookie-banner__button`
-
-#### consentOnNavigation:
-*boolean*: Implicit consent on site navigation
-
-*Default*: `true`
-
-#### consentOnScroll:
-*boolean*: Implicit consent on page scroll
-
-*Default*: `true`
-
 #### bannerClass:
 *String*: Banner class
 
 *Default*: `cookie-banner`
 
-#### bannerContent:
-*String*: Banner message ( Mandatory variables: {{bannerClass}}, {{cookiePageUrl}}, {{consentClass}} )
+#### bannerLinkText:
+*Object*: Policy page link text
 
-*Default*: `<div class="{{bannerClass}}">Questo sito utilizza cookie, anche di terze parti, per migliorare la tua esperienza di navigazione. Per saperne di più o modificare le tue preferenze <a class="cookie-banner__link" href="{{cookiePageUrl}}">clicca qui</a>.<br />Chiudendo questo banner, scorrendo questa pagina o cliccando qualunque suo elemento acconsenti all\'uso dei cookie. <a href="#" class="{{consentClass}} cookie-banner__button--consent">Acconsento</a></div>`
+*Default*: `{
+	it: 'Approfondisci',
+	en: 'Learn more',
+	de: 'Mehr dazu',
+	es: 'Descubre más',
+	ru: 'Узнайте больше'
+},`
+
+#### bannerText:
+*Object*: Banner text
+
+*Default*: `{
+	it: 'Questo sito utilizza cookie, anche di terze parti, per migliorare la tua esperienza di navigazione. Chiudendo questo banner, scorrendo questa pagina o cliccando qualunque suo elemento acconsenti all\'uso dei cookie.',
+	en: 'This website uses cookies (also third-party cookies) to provide you a better navigation experience. By closing this banner, scrolling this page or by clicking any of its elements, you agree to the use of cookies.',
+	de: 'Diese Website verwendet Cookies, auch von Dritten, um Ihre Browser-Erfahrung zu verbessern. Durch das Schließen dieses Banners, das Scrollen durch diese Seite oder einen Klick auf deren Elemente, erklären Sie sich mit der Verwendung der Cookies einverstanden.',
+	es: 'Este sitio web utiliza cookies propias y de terceros para mejorar tu experiencia de navegación. Cerrando este banner, recorriendo esta página o haciendo clic en cualquier elemento, autorizas el uso de cookies.',
+	ru: 'Этот Сайт использует собственные и сторонние cookie-файлы для того, чтобы предоставить Вам больше возможностей при использовании сайта. Продолжая посещение веб-сайта, вы соглашаетесь на использование cookie-файлов.'
+},`
 
 #### blockCookie:
-*Bolean*: Block elements execution (iframe, js, img ... )
+*Boolean*: Run blocked elements on consent (iframe, js, img ... )
 
 *Default*: `true`
 
 #### blockCookieAttribute:
-*String*: Attribute name for insert src when is blocked (iframe, img ...)
+*String*: Attribute name for the original src (iframe, img ...)
 
-*Default*: `cookie-banner`
+*Default*: `data-src`
 
 #### blockCookieClass:
-*String*: Class name for blocking external cookie (iframe, js, img ...)
+*String*: Class to identify locked items (iframe, js, img ...)
 
 *Default*: `block-cookie`
 
+#### consentButtonClass:
+*String*: Class for explicit consent button (Close X)
+
+*Default*: `cookie-banner__button`
+
+#### consentButtonText:
+*String*: Consent button Text
+
+*Object*: `{
+	it: 'Chiudi',
+	en: 'Close',
+	de: 'Schließen',
+	es: 'Cerrar',
+	ru: 'Закрыть'
+},`
+
+#### consentButtonTextClass:
+*String*: Class for explicit consent text
+
+*Default*: `cookie-banner__close`
+
+#### consentOnNavigation:
+*Boolean*: Implicit consent on site navigation
+
+*Default*: `true`
+
+#### consentOnScroll:
+*Boolean*: Implicit consent on page scroll
+
+*Default*: `true`
+
 #### cookieExpiry:
-*integer*: Cookie Expiry
+*integer*: Cookie expiry in days
 
 *Default*: `365`
 
@@ -85,9 +121,20 @@ $(document).ready(function() {
 *Default*: `consentCookie`
 
 #### cookiePageUrl:
-*String*: Privacy url
+*String*: Privacy page url
 
-*Default*: `/privacy.html`
+*Object*: `{
+	it: '',
+	en: '',
+	de: '',
+	es: '',
+	ru: ''
+}`
+
+#### culture:
+*String*: Specify in which language display the message
+
+*Default*: `en`
 
 #### hideBannerOnScroll:
 *boolean*: Hide banner on page scroll. ( consentOnScroll option must be true )
@@ -95,12 +142,12 @@ $(document).ready(function() {
 *Default*: `true`
 
 #### onConsent:
-*Function*: Callback function when cookie are accepted
+*Function*: Callback when cookie are accepted
 
 *Default*: `function() {}`
 
 #### prependBannerTo:
-*String*:  Selettore dove inserire il banner
+*String*:  Inserts banner at the beginning of this selector/class.
 
 *Default*: `body`
 
@@ -132,10 +179,6 @@ This method return true if cookie are accepted
 $.cookieBanner.consent();
 ```
 
-
-## Block element execution until cookie are accepted:
-
-
 ### Condition
 
 ```javascript
@@ -144,7 +187,10 @@ if ( $.cookieBanner.consent() ) {
 }
 ```
 
-### Src scripts
+## Block element execution until cookie are accepted:
+
+
+### Block src scripts
 
 Original
 
@@ -152,13 +198,13 @@ Original
 <script type="text/javascript" src="scripts.js"></script>
 ```
 
-Modified
+Blocked
 
 ```html
 <script type="text/plain" src="scripts.js" class="block-cookie"></script>
 ```
 
-### Inline scripts
+### Block inline scripts
 
 Original
 
@@ -168,7 +214,7 @@ Original
 </script>
 ```
 
-Modified
+Blocked
 
 ```html
 <script type="text/plain" class="block-cookie">
@@ -176,7 +222,7 @@ Modified
 </script>
 ```
 
-### Src element ( iframe, img, ecc.. )
+### Block src element ( iframe, img, ecc.. )
 
 Original
 
@@ -187,13 +233,13 @@ Original
 Modified
 
 ```html
-<iframe data-block-cookie="https://www.youtube.com/embed/kxopViU98Xo" class="block-cookie"></iframe>
+<iframe data-src="https://www.youtube.com/embed/kxopViU98Xo" class="block-cookie"></iframe>
 ```
 
 
 ## Credits
 
-Copyright (c) 2015 [Fabio Quarantini](http://www.fabioquarantini.com)
+Copyright (c) [Fabio Quarantini](http://www.fabioquarantini.com)
 
 ## License
 
