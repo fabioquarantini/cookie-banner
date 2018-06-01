@@ -1,21 +1,23 @@
 $(document).ready(function() {
 
-	// Initialize plugin
+	var culture;
+
+	switch ($('html').attr('lang')) {
+
+		case 'it-IT':
+			culture = 'it';
+			break;
+		default:
+			culture = 'en';
+
+	}
+
 	$.cookieBanner({
-		consentOnScroll: true,
-		blockCookie: true,
-		cookiePageUrl: '/demo/privacy.html',
-		onConsent: function() {
-			console.log('On consent callback');
-		},
+		culture: culture,
+		cookiePageUrl: {
+			it: 'privacy.html',
+			en: 'privacy.html'
+		}
 	});
-
-	// Triggered event
-	$( document ).on( 'cookieConsent', function() {
-		console.log('Triggered cookieConsent ');
-	});
-
-	// Check consent
-	console.log( 'Consent is: ' + $.cookieBanner.consent() );
 
 });

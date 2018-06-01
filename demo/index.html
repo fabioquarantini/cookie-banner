@@ -1,15 +1,16 @@
 <!doctype html>
-<html>
+<html lang="en-US">
 	<head>
 
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<title>Demo</title>
+		<title>Cookie banner demo</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<!-- Banner styles -->
 		<link rel="stylesheet" href="../cookie-banner.css">
 
-		<!-- Plugin scripts -->
+		<!-- Plugin initialization scripts -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="../jquery.cookie-banner.js"></script>
 		<script src="js/scripts.js"></script>
@@ -17,29 +18,29 @@
 		<!-- Block external scripts example -->
 		<script class="block-cookie" type="text/plain" src="js/external-scripts.js"></script>
 
-		<!-- Block inline scripts example -->
-		<script type="text/plain" class="block-cookie">
-			alert("Inline Javascript loaded");
-		</script>
-
 	</head>
 	<body>
 
-		<h1>Demo</h1>
+		<div style="min-height:900px; width: 992px; margin: 0 auto 85px auto; text-align: center; font-family: sans-serif; color: #555;">
+			<h1 style="margin-bottom: 65px; text-transform: uppercase">Cookie banner demo</h1>
 
-		<!-- Block image -->
-		<img class="block-cookie" data-block-cookie="https://www.google.it/images/srpr/logo11w.png" alt="">
+			<h2>Block image loading without consent</h2>
+			<img class="block-cookie" data-src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="image blocked">
 
-		<!-- Block iframe -->
-		<iframe class="block-cookie" width="560" height="315" data-block-cookie="https://www.youtube.com/embed/kxopViU98Xo" frameborder="0" allowfullscreen></iframe>
+			<h2 style="margin-top: 65px;">Block iframe loading without consent</h2>
+			<iframe class="block-cookie" width="560" height="315" data-src="https://www.youtube.com/embed/kxopViU98Xo" frameborder="0" allowfullscreen></iframe>
 
-		<div style="height:900px">
+			<h2 style="margin-top: 65px;">Block inline scripts example without consent</h2>
+			<script type="text/plain" class="block-cookie">
+				$('.js-inline').html('Consent is true');
+			</script>
+			<p class="js-inline">No consent</p>
 
-			<!-- Set consent true when view another page ("consentOnNavigation" is true) -->
-			<a href="index.html">Continue navigation link</a>
+			<h2 style="margin-top: 65px;">Set consent "true" when navigate to another page</h2>
+			<a href="index.html">Continue navigation</a>
 
-			<!-- Consent false when view the privacy page ("cookiePageUrl") if consentOnNavigation" is true -->
-			<a href="privacy.html">Privacy link</a>
+			<h2 style="margin-top: 65px;">Set consent "false" when navigate to the privacy page</h2>
+			<a href="privacy.html">Privacy page</a>
 		</div>
 
 	</body>
