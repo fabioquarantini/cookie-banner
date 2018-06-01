@@ -1,92 +1,120 @@
-//! jQuery Cookie Banner v0.1.0 - Fabio Quarantini - www.fabioquarantini.com
+//! jQuery Cookie Banner v1.0.0 - Fabio Quarantini - www.fabioquarantini.com
 
-;( function( $, window, document, undefined ) {
+(function($, window, document, undefined) {
 
-	$.cookieBanner = function( settings ) {
+	$.cookieBanner = function(settings) {
 
 		var defaults = {
-			consentClass: 'cookie-banner__button--accept',
+			bannerClass: 'cookie-banner',
+			bannerLinkText: {
+				it: 'Approfondisci',
+				en: 'Learn more',
+				de: 'Mehr dazu',
+				es: 'Descubre más',
+				ru: 'Узнайте больше'
+			},
+			bannerText: {
+				it: 'Questo sito utilizza cookie, anche di terze parti, per migliorare la tua esperienza di navigazione. Chiudendo questo banner, scorrendo questa pagina o cliccando qualunque suo elemento acconsenti all\'uso dei cookie.',
+				en: 'This website uses cookies (also third-party cookies) to provide you a better navigation experience. By closing this banner, scrolling this page or by clicking any of its elements, you agree to the use of cookies.',
+				de: 'Diese Website verwendet Cookies, auch von Dritten, um Ihre Browser-Erfahrung zu verbessern. Durch das Schließen dieses Banners, das Scrollen durch diese Seite oder einen Klick auf deren Elemente, erklären Sie sich mit der Verwendung der Cookies einverstanden.',
+				es: 'Este sitio web utiliza cookies propias y de terceros para mejorar tu experiencia de navegación. Cerrando este banner, recorriendo esta página o haciendo clic en cualquier elemento, autorizas el uso de cookies.',
+				ru: 'Этот Сайт использует собственные и сторонние cookie-файлы для того, чтобы предоставить Вам больше возможностей при использовании сайта. Продолжая посещение веб-сайта, вы соглашаетесь на использование cookie-файлов.'
+			},
+			blockCookie: true,
+			blockCookieAttribute: 'data-src',
+			blockCookieClass: 'block-cookie',
+			consentButtonClass: 'cookie-banner__button',
+			consentButtonText: {
+				it: 'Chiudi',
+				en: 'Close',
+				de: 'Schließen',
+				es: 'Cerrar',
+				ru: 'Закрыть'
+			},
+			consentButtonTextClass: 'cookie-banner__close',
 			consentOnNavigation: true,
 			consentOnScroll: true,
-			bannerClass: 'cookie-banner',
-			bannerContent: '<div class="{{bannerClass}} cookie-banner--bottom">Questo sito utilizza cookie, anche di terze parti, per migliorare la tua esperienza di navigazione. Per saperne di più o modificare le tue preferenze <a class="cookie-banner__link" href="{{cookiePageUrl}}">clicca qui</a>.<br />Chiudendo questo banner, scorrendo questa pagina o cliccando qualunque suo elemento acconsenti all\'uso dei cookie. <a href="#" class="cookie-banner__button cookie-banner__button--consent {{consentClass}}">Acconsento</a></div>',
-			blockCookie: true,
-			blockCookieAttribute: 'data-block-cookie',
-			blockCookieClass: 'block-cookie',
 			cookieExpiry: 365,
 			cookieName: 'consentCookie',
-			cookiePageUrl: '/privacy.html',
+			cookiePageUrl: {
+				it: '',
+				en: '',
+				de: '',
+				es: '',
+				ru: ''
+			},
+			culture: 'en',
 			hideBannerOnScroll: true,
 			onConsent: function() {},
 			prependBannerTo: 'body',
-			reloadPage: false,
+			reloadPage: false
 		};
 
-		$.extend( defaults, settings );
+		$.extend(true, defaults, settings);
 
-		// Create cookie
-		function createCookie( name, value, days ) {
+		function createCookie(name, value, days) {
 
-			var expire;
+			var expires;
 
 			if (days) {
+
 				var date = new Date();
-				date.setTime(date.getTime()+(days*24*60*60*1000));
-				expires = "; expires="+date.toGMTString();
+				date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+				expires = '; expires=' + date.toGMTString();
+
 			} else {
-				expires = "";
+
+				expires = '';
+
 			}
 
-			document.cookie = name+"="+value+expires+"; path=/";
+			document.cookie = name + '=' + value + expires + '; path=/';
 
 		}
 
-		// Read cookie
-		function readCookie( name ) {
+		function readCookie(name) {
 
-			var nameEQ = name + "=";
+			var nameEQ = name + '=';
 			var ca = document.cookie.split(';');
-			for(var i=0;i < ca.length;i++) {
+			for (var i = 0; i < ca.length; i++) {
+
 				var c = ca[i];
-				while (c.charAt(0)==' ') c = c.substring(1,c.length);
-				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+
 			}
 			return null;
 
 		}
 
-		// Erase cookie
-		function eraseCookie( name ) {
+		function eraseCookie(name) {
 
-			createCookie(name,"",-1);
+			createCookie(name, '', -1);
 
 		}
 
-		// Hide banner
 		function hideBanner() {
 
-			$("."+defaults.bannerClass).fadeOut( 400, function() {
-			    $(this).remove();
+			$('.' + defaults.bannerClass).fadeOut(400, function() {
+
+				$(this).remove();
+
 			});
 
 		}
 
-		// Reload page
 		function reloadPage() {
 
 			document.location.reload();
 
 		}
 
-		// Create cookie on consent
-		function createCookieConsent() {
+		function createCookieOnConsent() {
 
-			if ( readCookie(defaults.cookieName) === null ) {
+			if (readCookie(defaults.cookieName) === null) {
 
-				// Create cookie
 				createCookie(defaults.cookieName, 'true', defaults.cookieExpiry);
 
-				// Add event on consent
 				$(document).trigger('onConsent');
 
 				// Run callback
@@ -96,10 +124,14 @@
 
 		}
 
-		// Check if is the privacy page
-		function checkPrivacyPage() {
+		function isPrivacyPage() {
 
-			if ( window.location.pathname.toLowerCase() == defaults.cookiePageUrl.toLowerCase() ) {
+			if (
+				window.location.pathname
+					.toLowerCase()
+					.split('/')
+					.pop() == defaults.cookiePageUrl[defaults.culture].toLowerCase()
+			) {
 
 				return true;
 
@@ -111,37 +143,41 @@
 
 		}
 
-		// Activate blocked elements
-		function activateBlockedElements( activatorClass ) {
+		function runBlockedElements(activatorClass) {
 
-			$('.' + activatorClass ).each(function() {
+			$('.' + activatorClass).each(function() {
 
-				if ( $(this).prop("tagName") === "SCRIPT" ) {
+				if ($(this).prop('tagName') === 'SCRIPT') {
 
 					var attr = $(this).attr('src');
 
-					// If the scripts has the src
-					if ( attr ) {
-						$.getScript( attr );
-					} else { // If the script is inline
+					// Scripts with src
+					if (attr) {
 
+						$.getScript(attr);
+
+					} else {
+
+						// Script inline
 						var scriptText = $(this).html();
-						eval( scriptText);
+						eval(scriptText);
 
 					}
 
-					// Replace type text whith javascript
-					$(this).attr( 'type', 'text/javascript' );
+					// Replace type text whith text/javascript
+					$(this).attr('type', 'text/javascript');
 
 				} else {
 
-					$('.' + activatorClass ).each(function() {
+					$('.' + activatorClass).each(function() {
 
 						var attr = $(this).attr(defaults.blockCookieAttribute);
 
-						if ( attr ) {
+						if (attr) {
+
 							// Set src whith data value
-							$(this).attr('src', attr );
+							$(this).attr('src', attr);
+
 						}
 
 					});
@@ -150,34 +186,44 @@
 
 			});
 
+		}
+
+		if (readCookie(defaults.cookieName) === null && !isPrivacyPage()) {
+
+			$(defaults.prependBannerTo).prepend(
+				'<div class="' +
+					defaults.bannerClass +
+					'">' +
+					defaults.bannerText[defaults.culture] +
+					' <a class="cookie-banner__link" href="' +
+					defaults.cookiePageUrl[defaults.culture] +
+					'">' +
+					defaults.bannerLinkText[defaults.culture] +
+					'</a>' +
+					'<a class="' +
+					defaults.consentButtonClass +
+					'"><span class="' +
+					defaults.consentButtonTextClass +
+					'">' +
+					defaults.consentButtonText[defaults.culture] +
+					'</span></a></div>'
+			);
 
 		}
 
-		// Create banner
-		function createBanner(bannerContent) {
+		if (defaults.consentOnNavigation && readCookie(defaults.cookieName) === null && !isPrivacyPage()) {
 
-			$( defaults.prependBannerTo ).prepend( bannerContent.replace(/{{bannerClass}}/g, defaults.bannerClass).replace(/{{consentClass}}/g, defaults.consentClass).replace(/{{cookiePageUrl}}/g, defaults.cookiePageUrl) );
-
-		}
-
-		// If cookie does not exist and is not in the privacy page
-		if ( readCookie(defaults.cookieName) === null && !checkPrivacyPage() ) {
-
-			createBanner(defaults.bannerContent);
-
-		}
-
-		// If consent on navigation is true, cookie does not exist and is not in the privacy page
-		if ( defaults.consentOnNavigation && readCookie(defaults.cookieName) === null && !checkPrivacyPage() ) {
-
-			// When I click link in page
 			$(document).on('click', 'a', function() {
 
-				// If the pathname is different from privacy page
-				if ( this.pathname.toLowerCase() !== defaults.cookiePageUrl.toLowerCase()) {
+				// If pathname is different from privacy page
+				if (
+					this.pathname
+						.toLowerCase()
+						.split('/')
+						.pop() !== defaults.cookiePageUrl[defaults.culture].toLowerCase()
+				) {
 
-					// Create cookie
-					createCookieConsent();
+					createCookieOnConsent();
 
 				}
 
@@ -185,59 +231,46 @@
 
 		}
 
-		// When I click the consent class
-		$('body').on('click', "." + defaults.consentClass, function() {
+		$('body').on('click', '.' + defaults.consentButtonClass, function(e) {
 
-			// If cookie does not exist
-			if ( readCookie(defaults.cookieName) === null ) {
+			e.preventDefault();
 
-				// Create cookie
-				createCookieConsent();
+			if (readCookie(defaults.cookieName) === null) {
 
-				// If block cookie is true
-				if ( defaults.blockCookie ) {
+				createCookieOnConsent();
 
-					// Activate blocked elements
-					activateBlockedElements( defaults.blockCookieClass );
+				if (defaults.blockCookie) {
+
+					runBlockedElements(defaults.blockCookieClass);
 
 				}
 
 			}
 
-			// Hide banner
 			hideBanner();
 
-			// If reload page is true
-			if ( defaults.reloadPage ) {
+			if (defaults.reloadPage) {
 
-				// Reload page
 				reloadPage();
 
 			}
 
 		});
 
-		// If consent on scroll is true, cookie does not exist and is not in the privacy page
-		if ( defaults.consentOnScroll && readCookie(defaults.cookieName) === null && !checkPrivacyPage() ) {
+		if (defaults.consentOnScroll && readCookie(defaults.cookieName) === null && !isPrivacyPage()) {
 
-			// When scroll
-			$( window ).one('scroll', function() {
+			$(window).one('scroll', function() {
 
-				// Create cookie
-				createCookieConsent();
+				createCookieOnConsent();
 
-				// If block cookie is true
-				if ( defaults.blockCookie ) {
+				if (defaults.blockCookie) {
 
-					// Activate blocked elements
-					activateBlockedElements( defaults.blockCookieClass );
+					runBlockedElements(defaults.blockCookieClass);
 
 				}
 
-				// If hide banner on scroll is true
-				if ( defaults.hideBannerOnScroll ) {
+				if (defaults.hideBannerOnScroll) {
 
-					// Hide banner
 					hideBanner();
 
 				}
@@ -246,20 +279,19 @@
 
 		}
 
-		// If block cookie is true and consent is true
-		if ( defaults.blockCookie && readCookie(defaults.cookieName ) ) {
+		if (defaults.blockCookie && readCookie(defaults.cookieName)) {
 
-			// Activate blocked elements
-			activateBlockedElements( defaults.blockCookieClass );
+			runBlockedElements(defaults.blockCookieClass);
 
 		}
 
 		// Return consent (true or null)
 		$.cookieBanner.consent = function() {
+
 			return readCookie(defaults.cookieName);
+
 		};
 
 	};
-
 
 })(jQuery, window, document);
